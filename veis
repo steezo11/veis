@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+#
+#NAME: VEIS View Excel Inside Shell
+#AUTHOR: Christopher 'Steezo' Leininger
+#PURPOSE: Convert xls file into a csv file and display it within terminal
+#
+#
+#****Will create a csv version of the file being viewed within the pwd****
+#
+#
+import os
+import sys
+#
+def rmFileExt(i):
+    i.pop()
+    i.pop()
+    i.pop()
+    i.pop()
+#
+fileAsList = []
+#
+#IF THERE ARE TWO ARGUMENTS, CONTINUE WITH SCRIPT
+if len(sys.argv) == 2 :
+    xlsFile = sys.argv[1]
+#    print xlsFile
+#    print type(xlsFile)
+    #CHANGES FILE FROM A STRING TO A LIST
+    for i in xlsFile:
+        fileAsList.extend(i)
+    #FUCNTION TO REMOVE FILE EXT
+    rmFileExt(fileAsList)
+    #CREATE CSV FILE 
+    csvFile = ''.join(fileAsList)
+    #WHAT IS DISPLAYED TO SHELL
+    print "------------------------------------------------------------------"
+    print "------------------------------------------------------------------"
+    os.system("ssconvert " + xlsFile + " " + csvFile +".csv 2< /dev/null")
+    os.system("sed 's/, / /g' " + csvFile + ".csv | column -s, -t")
+    print "------------------------------------------------------------------"
+    print "------------------------------------------------------------------"
+#
+#IF ATTEMPT TO ENTER IN MULTIPLE FILES, THROW AN ERROR
+elif len(sys.argv) > 2 :
+    print "-----------------------------------------"
+    print " ERROR: Please convert one file at a time"
+    print "-----------------------------------------"
+#
+#IF DO NOT PROVIDE FILE, THROW AN ERROR
+else:
+    print "--------------------------------------"	
+    print " ERROR: Please provide file to convert"
+    print "--------------------------------------"
+
+#END
+
